@@ -56,4 +56,3 @@ def download (tiktok_url:str):
     # Close browser
     scraper.end_browser()
     
-download ("https://www.tiktok.com/@kimberly.loaiza/video/7032511219709906181?is_copy_url=1&is_from_webapp=v1")
