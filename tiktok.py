@@ -1,16 +1,16 @@
-import os 
+import os
 import time
 from config import Config
 from scraping_manager.automate import Web_scraping
 
-def get ():
-    """Start slenium width web scraping class and return class instance
+def download (tiktok_url:str):
+    """Download video from tictok and save it in downloads folder
 
-    Returns:
-        Web_scraping: runing instance of selenium / Web_scraping
+    Args:
+        tiktok_url (str): tiktok link
     """
 
-    print ("Starting chrome and installing extentions")
+    print ("Starting chrome and installing extentions...")
 
     current_folder = os.path.dirname (__file__)
     
@@ -33,15 +33,27 @@ def get ():
     scraper = Web_scraping ( headless=headless, 
                              download_folder=download_folder,
                              extensions=extensions)
-    
-    # Close extensions tabs and end browser
-    scraper.kill()
 
-    # Restart chrome
-    scraper = Web_scraping ( headless=headless, 
-                             download_folder=download_folder,
-                             extensions=extensions,
-                             chrome_folder=chrome_folder)
+    print ("Downloading video...")
 
-    return scraper
+    # Open browser and go to snaptik
+    time.sleep (5)
+    scraper.switch_to_tab (0)
+    scraper.set_page ("https://snaptik.app/en")
+
+    # Paste link and start download
+    selector_input = "#url"
+    selector_submit = "#submiturl"
+    scraper.send_data(selector_input, tiktok_url)
+    scraper.click (selector_submit)
     
+    # Wait for video load
+    download_selector = 'a.abutton.is-success:nth-child(1)'
+    scraper.wait_load(download_selector)
+    scraper.click (download_selector)
+    time.sleep (5)
+
+    # Close browser
+    scraper.end_browser()
+    
+download ("https://www.tiktok.com/@kimberly.loaiza/video/7032511219709906181?is_copy_url=1&is_from_webapp=v1")

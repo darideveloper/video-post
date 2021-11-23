@@ -24,7 +24,8 @@ class Web_scraping ():
     def __init__ (
             self, web_page="", headless=True, time_out=0, 
             proxy_server="", proxy_port="", proxy_user="", proxy_pass="", 
-            chrome_folder="", user_agent=True, capabilities=False): 
+            chrome_folder="", user_agent=True, capabilities=False,
+            download_folder="", extensions=[]): 
         """
         Constructor of the class
         """
@@ -43,6 +44,8 @@ class Web_scraping ():
         self.__chrome_folder = chrome_folder
         self.__user_agent = user_agent
         self.__capabilities = capabilities
+        self.__download_folder = download_folder
+        self.__extensions = extensions
         
         # Desable modules logs
         logging.disable(logging.DEBUG)
@@ -107,6 +110,15 @@ class Web_scraping ():
             capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
         else: 
             capabilities = None
+
+        if self.__download_folder:
+            prefs = {"download.default_directory" : f"{self.__download_folder}"}
+            options.add_experimental_option("prefs",prefs)
+
+        if self.__extensions:
+            for extension in self.__extensions:
+                options.add_extension(extension)
+
 
         
         # Set configuration to  and create instance
@@ -558,3 +570,10 @@ class Web_scraping ():
 
         script = f"document.body.style.zoom='{percentage}%'"
         self.driver.execute_script (script)
+
+    def kill (self):
+        """ Detect and close all tabs """
+        tabs = self.driver.window_handles
+        for _ in tabs:
+            self.switch_to_tab(1)
+            self.end_browser()
