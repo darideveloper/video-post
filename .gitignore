@@ -1,0 +1,10 @@
+__pycache__
+*__pycache__
+*.json
+*temp.*
+temp.*
+*.log*
+*.log*
+*.zip
+*.png
+chrome_data
