@@ -1,5 +1,7 @@
 import os
+import tiktok
 from config import Config
+from spreadsheet_manager.xlsx import SS_manager
 
 def main (): 
     """
@@ -11,16 +13,28 @@ def main ():
     
     # Project paths
     current_folder = os.path.dirname (__file__)
-    videos_path = os.path.join (current_folder, "videos.txt")
+    videos_path = os.path.join (current_folder, "videos.xlsx")
 
-    # Get video links
-    with open (videos_path, "r") as file:
-        video_links = file.read().split("\n")
+    # Get data from file
+    print ("reading xlsx file...")
+    ss = SS_manager(videos_path)
+    ss.set_sheet ("videos")
+    videos_data = ss.get_data()
 
     # Main llop for each video
-    for video_link in video_links:
-        if video_link and "https://www.tiktok.com/@" in video_link:
-            print (video_link)
+    for video_link, title, description, status in videos_data[1:]:
+        
+        # print (video_link, title, description, status)
+
+        # Validate video link
+        if video_link:
+
+            # Validate video status
+            if not status or status == "no": 
+
+                # Download video
+                print (f"\nVideo: {title}")
+                tiktok.download(video_link)
 
 
 if __name__ == "__main__":

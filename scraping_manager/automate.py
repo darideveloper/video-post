@@ -575,5 +575,5 @@ class Web_scraping ():
         """ Detect and close all tabs """
         tabs = self.driver.window_handles
         for _ in tabs:
-            self.switch_to_tab(1)
+            self.switch_to_tab(0)
             self.end_browser()

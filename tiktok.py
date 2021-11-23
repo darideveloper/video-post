@@ -10,7 +10,7 @@ def download (tiktok_url:str):
         tiktok_url (str): tiktok link
     """
 
-    print ("\tStarting chrome and installing extentions...")
+    print ("\tStarting chrome and installing extensions...")
 
     current_folder = os.path.dirname (__file__)
     
@@ -37,7 +37,7 @@ def download (tiktok_url:str):
     print ("\tDownloading video...")
 
     # Open browser and go to snaptik
-    time.sleep (5)
+    time.sleep (10)
     scraper.switch_to_tab (0)
     scraper.set_page ("https://snaptik.app/en")
 
@@ -49,12 +49,19 @@ def download (tiktok_url:str):
     
     # Wait for video load
     download_selector = 'a.abutton.is-success:nth-child(1)'
+    
     try:
         scraper.wait_load(download_selector, time_out=60)
     except:
+        print ("Error to download, video omitted")
+        
+        # Close browser and end function
+        scraper.kill()
         return None
+
+    # Download
     scraper.click (download_selector)
-    time.sleep (5)
+    time.sleep (10)
 
     # Close browser
     scraper.kill()
