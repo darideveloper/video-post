@@ -1,7 +1,8 @@
 import os
-import tiktok
+import tiktok 
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
+from scraping_manager.automate import Web_scraping
 
 def main (): 
     """
@@ -9,11 +10,14 @@ def main ():
         instagram reels
         twitter
         youtube shorts
+        facebook business
     """
     
     # Project paths
     current_folder = os.path.dirname (__file__)
     videos_path = os.path.join (current_folder, "videos.xlsx")
+    current_folder = os.path.dirname (__file__)
+    download_folder = os.path.join (current_folder, "downloads")
 
     # Get data from file
     print ("reading xlsx file...")
@@ -21,7 +25,19 @@ def main ():
     ss.set_sheet ("videos")
     videos_data = ss.get_data()
 
-    # Main llop for each video
+    print ("Starting chrome...")
+        
+    # Credentials
+    credentials = Config()
+    headless = not credentials.get_credential("show_browser")
+    chrome_folder = credentials.get_credential("chrome_folder")
+
+    # Start browser for install extensions
+    scraper = Web_scraping ( headless=headless, 
+                             download_folder=download_folder,
+                             chrome_folder=chrome_folder)   
+
+    # Main loop for each video
     for video_link, title, description, status in videos_data[1:]:
         
         # print (video_link, title, description, status)
@@ -34,7 +50,7 @@ def main ():
 
                 # Download video
                 print (f"\nVideo: {title}")
-                tiktok.download(video_link)
+                tiktok.download(scraper, video_link, title)
 
 
 if __name__ == "__main__":

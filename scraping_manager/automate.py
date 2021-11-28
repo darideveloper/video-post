@@ -6,6 +6,7 @@ import zipfile
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
+import webdriver_manager
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.utils import ChromeType
 from selenium.webdriver.common.by import By
@@ -14,8 +15,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 current_file = os.path.basename(__file__)
-
   
+# Diable web driver manager logs 
+logger = logging.getLogger("webdriver_manager")
+logger.setLevel(logging.ERROR)
+
 class Web_scraping (): 
     """
     Class to manage and configure web browser
@@ -77,7 +81,11 @@ class Web_scraping ():
         options.add_argument('--log-level=3')
         options.add_argument("--disable-notifications");
         options.add_argument("disable-infobars");
+
+        # Experimentals
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         
         if self.__headless:        
             options.add_argument("--window-size=1920,1080")
@@ -577,3 +585,12 @@ class Web_scraping ():
         for _ in tabs:
             self.switch_to_tab(0)
             self.end_browser()
+
+    def scroll (self, selector, scroll_x, scroll_y):
+        """ Scroll X or Y in specific element of the page """
+
+        elem = self.get_elem(selector)
+        self.driver.execute_script("arguments[0].scrollTo(arguments[1], arguments[2])", 
+                                    elem, 
+                                    scroll_x, 
+                                    scroll_y) 

@@ -59,3 +59,8 @@ To configure the database, we need to set our credentials:
 ## config.json
 
 All **configurations** are saved in the **config.json file**, so **you can edit it manually** without the graphical interface.
+
+
+SETTINGS CHROME: 
+Extensions
+Download folder

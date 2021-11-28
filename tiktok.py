@@ -1,43 +1,19 @@
 import os
 import time
-from config import Config
-from scraping_manager.automate import Web_scraping
+import requests
 
-def download (tiktok_url:str):
+def download (scraper:object, tiktok_url:str, title:str):
     """Download video from tictok and save it in downloads folder
 
     Args:
+        scraper (object): web scraping instance
         tiktok_url (str): tiktok link
     """
-
-    print ("\tStarting chrome and installing extensions...")
-
-    current_folder = os.path.dirname (__file__)
-    
-    # Get credentials
-    credentials = Config()
-    headless = not credentials.get_credential("show_browser")
-    download_folder = os.path.join (current_folder, "downloads")
-
-    # Get chrome extentiosn path from extensions folder
-    extensions = []
-    extensions_folder = os.path.join (current_folder, "extensions")
-    for extension in os.listdir(extensions_folder):
-        extension_path = os.path.join (extensions_folder, extension)
-        extensions.append (extension_path)
-    
-    # Chrome data folder
-    chrome_folder = os.path.join (current_folder, "chrome_data_2")
-
-    # Start browser for install extensions
-    scraper = Web_scraping ( headless=headless, 
-                             download_folder=download_folder,
-                             extensions=extensions)
 
     print ("\tDownloading video...")
 
     # Open browser and go to snaptik
-    time.sleep (10)
+    time.sleep (5)
     scraper.switch_to_tab (0)
     scraper.set_page ("https://snaptik.app/en")
 
@@ -59,10 +35,17 @@ def download (tiktok_url:str):
         scraper.kill()
         return None
 
-    # Download
-    scraper.click (download_selector)
-    time.sleep (10)
+    # get file link and extension
+    downlod_link = scraper.get_attrib (download_selector, "href")
+    separator = downlod_link.rfind (".")
+    extension = downlod_link[separator+1:]
 
-    # Close browser
-    scraper.kill()
+    # Download file
+    res = requests.get (downlod_link)
+    res.raise_for_status()
+    file_path = os.path.join (os.path.dirname (__file__), "downloads", f"{title}.{extension}")
+    with open (file_path, "wb") as file:
+        for chunk in res.iter_content (chunk_size=8000):
+            file.write (chunk)
+
     
