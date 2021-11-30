@@ -1,5 +1,5 @@
 import time
-import downloader
+import download
 from selenium.webdriver.common.keys import Keys
 
 def upload (scraper:object, file_path:str, title:str, description:str, tags:list): 
@@ -37,7 +37,7 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
 
     # Download file
     file_converted = file_path.replace(".mp4", " for twitter.mp4")
-    downloader.download (downlod_link, file_converted)
+    download.mp4 (downlod_link, file_converted)
 
     # Restart browser for close download pop-up
     scraper.kill ()

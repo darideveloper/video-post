@@ -1,5 +1,5 @@
 import os
-import tiktok 
+import download 
 from uploaders import instagram, twitter, youtube
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
@@ -52,7 +52,7 @@ def main ():
 
                 # Download video
                 print (f"\nVideo: {title}")
-                file_path = tiktok.download(scraper, video_link, title)
+                file_path = download.tiktok (scraper, video_link, title)
 
                 # Ipload video
                 if file_path: 
