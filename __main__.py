@@ -1,8 +1,6 @@
 import os
 import tiktok 
-import youtube
-import instagram
-import twitter
+from uploaders import instagram, twitter, youtube
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
 from scraping_manager.automate import Web_scraping
