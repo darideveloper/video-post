@@ -66,3 +66,5 @@ Extensions
 Download folder
 
 youtube limit: 15 uploads per day
+
+instagram: install extension and upload a reel manually

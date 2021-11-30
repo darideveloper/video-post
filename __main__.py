@@ -1,6 +1,7 @@
 import os
 import tiktok 
 import youtube
+import instagram
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
 from scraping_manager.automate import Web_scraping
@@ -56,7 +57,8 @@ def main ():
 
                 # Ipload video
                 if file_path: 
-                    youtube.upload (scraper, file_path, title, description, tags)
+                    # youtube.upload (scraper, file_path, title, description, tags)
+                    instagram.upload (scraper, file_path, title, description, tags)
 
 
 

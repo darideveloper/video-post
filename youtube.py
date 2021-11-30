@@ -1,12 +1,9 @@
-import os 
 import time
-from config import Config
-from scraping_manager.automate import Web_scraping
 
 def upload (scraper:object, file_path:str, title:str, description:str, tags:list): 
     """ Upload video to yourube shorts """
 
-    print ("\tUploading video to youtube shorts...")
+    print ("\tUploading video to Youtube Shorts...")
 
     # Open page 
     youtube_url = "https://studio.youtube.com/"
