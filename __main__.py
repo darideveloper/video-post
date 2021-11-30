@@ -3,8 +3,10 @@ import download
 import globals
 from uploaders import instagram, twitter, youtube
 from config import Config
+from moviepy.editor import VideoFileClip
 from spreadsheet_manager.xlsx import SS_manager
 from scraping_manager.automate import Web_scraping
+
 
 # Project paths and global variables
 globals.current_folder = os.path.dirname (__file__)
@@ -25,6 +27,18 @@ def start_scraper ():
     globals.scraper = Web_scraping (headless=headless, 
                                     download_folder=globals.download_folder,
                                     chrome_folder=chrome_folder)   
+
+def get_video_duration (video_path:str):
+    """Get the duration in seconds from specific video
+
+    Args:
+        video_path (str): path of the video
+
+    Returns:
+        float: duation in seconds
+    """
+    clip = VideoFileClip(video_path)
+    return clip.duration
 
 def main (): 
     """
@@ -62,17 +76,30 @@ def main ():
 
                 # Ipload video
                 if file_path: 
-                    # Upload video to youtube
-                    # youtube.upload (file_path, title, description, tags)
                     
-                    # Upload video to instagram
-                    # instagram.upload (file_path, title, description, tags)
-                    
-                    # Convert video and upload video to twitter
-                    file_converted = twitter.convert (file_path)
-                    globals.scraper.kill ()
-                    start_scraper ()
-                    twitter.upload (file_converted, title, description, tags)
+                    duration = get_video_duration (file_path)
+
+                    # # Validate duration for youtube and instagram
+                    # if duration <= 60:
+                    #     # Upload video to youtube
+                    #     youtube.upload (file_path, title, description, tags)
+
+                    #     # Upload video to instagram
+                    #     instagram.upload (file_path, title, description, tags)
+                    # else:
+                    #     print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
+
+                    # Validate duration for twitter
+                    if duration <= 140: 
+                        # Convert video
+                        file_converted = twitter.convert (file_path)
+                        globals.scraper.kill ()
+                        start_scraper ()
+
+                        # Upload video to twitter
+                        twitter.upload (file_converted, title, description, tags)
+                    else:
+                        print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
 
 
 
