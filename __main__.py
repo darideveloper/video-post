@@ -1,9 +1,30 @@
 import os
 import download 
+import globals
 from uploaders import instagram, twitter, youtube
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
 from scraping_manager.automate import Web_scraping
+
+# Project paths and global variables
+globals.current_folder = os.path.dirname (__file__)
+globals.videos_path = os.path.join (globals.current_folder, "videos.xlsx")
+globals.download_folder = os.path.join (globals.current_folder, "downloads")
+
+def start_scraper ():
+    """ Start selenium with user settings and save as global variable
+    """
+
+
+    # Credentials
+    credentials = Config()
+    headless = not credentials.get_credential("show_browser")
+    chrome_folder = credentials.get_credential("chrome_folder")
+
+    # Start browser for install extensions
+    globals.scraper = Web_scraping (headless=headless, 
+                                    download_folder=globals.download_folder,
+                                    chrome_folder=chrome_folder)   
 
 def main (): 
     """
@@ -13,30 +34,15 @@ def main ():
         youtube shorts
         facebook business
     """
-    
-    # Project paths
-    current_folder = os.path.dirname (__file__)
-    videos_path = os.path.join (current_folder, "videos.xlsx")
-    current_folder = os.path.dirname (__file__)
-    download_folder = os.path.join (current_folder, "downloads")
 
     # Get data from file
     print ("reading xlsx file...")
-    ss = SS_manager(videos_path)
+    ss = SS_manager(globals.videos_path)
     ss.set_sheet ("videos")
     videos_data = ss.get_data()
 
     print ("Starting chrome...")
-        
-    # Credentials
-    credentials = Config()
-    headless = not credentials.get_credential("show_browser")
-    chrome_folder = credentials.get_credential("chrome_folder")
-
-    # Start browser for install extensions
-    scraper = Web_scraping ( headless=headless, 
-                             download_folder=download_folder,
-                             chrome_folder=chrome_folder)   
+    start_scraper ()
 
     # Main loop for each video
     for video_link, title, description, tags_text, status in videos_data[1:]:
@@ -52,13 +58,19 @@ def main ():
 
                 # Download video
                 print (f"\nVideo: {title}")
-                file_path = download.tiktok (scraper, video_link, title)
+                file_path = download.tiktok (video_link, title)
 
                 # Ipload video
                 if file_path: 
-                    # youtube.upload (scraper, file_path, title, description, tags)
-                    # instagram.upload (scraper, file_path, title, description, tags)
-                    twitter.upload (scraper, file_path, title, description, tags)
+                    # Upload video to youtube
+                    # youtube.upload (file_path, title, description, tags)
+                    
+                    # Upload video to instagram
+                    # instagram.upload (file_path, title, description, tags)
+                    
+                    # Upload video to twitter
+
+                    twitter.upload (file_path, title, description, tags)
 
 
 

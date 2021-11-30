@@ -1,27 +1,28 @@
 import time
 import download
+import globals
 from selenium.webdriver.common.keys import Keys
 
-def upload (scraper:object, file_path:str, title:str, description:str, tags:list): 
+def upload (file_path:str, title:str, description:str, tags:list): 
     """ Upload video to twitter """
 
     print ("\tConverting video...")
     
     # Open converter page
     converter_url = "https://servicios-web.online-convert.com/es/convertir-para-twitter"
-    scraper.set_page (converter_url)
+    globals.scraper.set_page (converter_url)
 
     # Upload video
     selector_input = "#fileUploadInput"
-    scraper.send_data (selector_input, file_path)
+    globals.scraper.send_data (selector_input, file_path)
 
     # Start conversion
     selector_start = "button.btn.btn-lg.submit-btn.mb-0"
-    last_url = scraper.driver.current_url
+    last_url = globals.scraper.driver.current_url
     while True:
-        scraper.click (selector_start)
+        globals.scraper.click (selector_start)
         time.sleep (2)
-        current_url = scraper.driver.current_url
+        current_url = globals.scraper.driver.current_url
         if current_url != last_url:
             break 
 
@@ -29,7 +30,7 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
     while True:
         time.sleep (2)
         selector_download = "a.btn.btn-large.btn-download"
-        downlod_link = scraper.get_attrib (selector_download, "href")
+        downlod_link = globals.scraper.get_attrib (selector_download, "href")
         if downlod_link:
             break
         else:
@@ -40,19 +41,19 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
     download.mp4 (downlod_link, file_converted)
 
     # Restart browser for close download pop-up
-    scraper.kill ()
+    globals.scraper.kill ()
 
     print ("\tUploading video to Twitter...")
 
     # Open page 
     twitter_url = "https://twitter.com/home"
-    scraper.set_page (twitter_url)
+    globals.scraper.set_page (twitter_url)
     time.sleep (5)
-    scraper.refresh_selenium ()
+    globals.scraper.refresh_selenium ()
 
     # Upload file
     selector_input = 'input[accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/quicktime,video/webm"]'
-    scraper.send_data (selector_input, file_path)
+    globals.scraper.send_data (selector_input, file_path)
     time.sleep (10)
     
     # Video title and description
@@ -61,9 +62,9 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
     for tag in tags:
         tag_text += f"\n#{tag}"
     text_formated = f"{title}\n\n{description}\n{tag_text}"
-    scraper.send_data (selector_details, text_formated)
+    globals.scraper.send_data (selector_details, text_formated)
 
     # Post tweet
     selector_share = 'div[data-testid="tweetButtonInline"]'
-    scraper.click_js (selector_share)
+    globals.scraper.click_js (selector_share)
     time.sleep (20)
