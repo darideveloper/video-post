@@ -20,6 +20,9 @@ current_file = os.path.basename(__file__)
 logger = logging.getLogger("webdriver_manager")
 logger.setLevel(logging.ERROR)
 
+logger = logging.getLogger("selenium")
+logger.setLevel(logging.ERROR)
+
 class Web_scraping (): 
     """
     Class to manage and configure web browser
@@ -79,13 +82,14 @@ class Web_scraping ():
         options.add_argument('--start-maximized')
         options.add_argument('--output=/dev/null')
         options.add_argument('--log-level=3')
-        options.add_argument("--disable-notifications");
-        options.add_argument("disable-infobars");
+        options.add_argument("--disable-notifications")
+        options.add_argument("disable-infobars")
 
         # Experimentals
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         
         if self.__headless:        
             options.add_argument("--window-size=1920,1080")

@@ -68,9 +68,11 @@ def main ():
                     # Upload video to instagram
                     # instagram.upload (file_path, title, description, tags)
                     
-                    # Upload video to twitter
-
-                    twitter.upload (file_path, title, description, tags)
+                    # Convert video and upload video to twitter
+                    file_converted = twitter.convert (file_path)
+                    globals.scraper.kill ()
+                    start_scraper ()
+                    twitter.upload (file_converted, title, description, tags)
 
 
 

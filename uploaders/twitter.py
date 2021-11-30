@@ -3,10 +3,10 @@ import download
 import globals
 from selenium.webdriver.common.keys import Keys
 
-def upload (file_path:str, title:str, description:str, tags:list): 
+def convert (file_path:str): 
     """ Upload video to twitter """
 
-    print ("\tConverting video...")
+    print ("\tConverting video for twitter...")
     
     # Open converter page
     converter_url = "https://servicios-web.online-convert.com/es/convertir-para-twitter"
@@ -29,9 +29,11 @@ def upload (file_path:str, title:str, description:str, tags:list):
     # Get download link
     while True:
         time.sleep (2)
-        selector_download = "a.btn.btn-large.btn-download"
+        selector_download = 'a.btn.btn-large.btn-download[title="Descargar tu archivo"]'
         downlod_link = globals.scraper.get_attrib (selector_download, "href")
-        if downlod_link:
+        if downlod_link and downlod_link != 'https://www.online-convert.com/es':
+            time.sleep (10)
+            downlod_link = globals.scraper.get_attrib (selector_download, "href")
             break
         else:
             continue
@@ -39,9 +41,10 @@ def upload (file_path:str, title:str, description:str, tags:list):
     # Download file
     file_converted = file_path.replace(".mp4", " for twitter.mp4")
     download.mp4 (downlod_link, file_converted)
+    return file_converted
 
-    # Restart browser for close download pop-up
-    globals.scraper.kill ()
+
+def upload (file_path:str, title:str, description:str, tags:list): 
 
     print ("\tUploading video to Twitter...")
 
@@ -67,4 +70,13 @@ def upload (file_path:str, title:str, description:str, tags:list):
     # Post tweet
     selector_share = 'div[data-testid="tweetButtonInline"]'
     globals.scraper.click_js (selector_share)
-    time.sleep (20)
+    
+    # Wait to update video
+    selector_placeholder = ".public-DraftEditorPlaceholder-inner"
+    while True:
+        time.sleep (2)
+        place_holder = globals.scraper.get_text (selector_placeholder)
+        if place_holder:
+            break
+        else:
+            continue

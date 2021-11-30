@@ -54,4 +54,5 @@ def mp4 (url:str, file_path:str):
     with open (file_path, "wb") as file:
         for chunk in res.iter_content (chunk_size=8000):
             file.write (chunk)
+    time.sleep (5)
     
