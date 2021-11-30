@@ -1,5 +1,6 @@
 import os
 import tiktok 
+import youtube
 from config import Config
 from spreadsheet_manager.xlsx import SS_manager
 from scraping_manager.automate import Web_scraping
@@ -38,9 +39,10 @@ def main ():
                              chrome_folder=chrome_folder)   
 
     # Main loop for each video
-    for video_link, title, description, status in videos_data[1:]:
+    for video_link, title, description, tags_text, status in videos_data[1:]:
         
-        # print (video_link, title, description, status)
+        # Tags to list
+        tags = tags_text.split(",")
 
         # Validate video link
         if video_link:
@@ -50,7 +52,12 @@ def main ():
 
                 # Download video
                 print (f"\nVideo: {title}")
-                tiktok.download(scraper, video_link, title)
+                file_path = tiktok.download(scraper, video_link, title)
+
+                # Ipload video
+                if file_path: 
+                    youtube.upload (scraper, file_path, title, description, tags)
+
 
 
 if __name__ == "__main__":

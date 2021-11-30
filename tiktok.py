@@ -48,4 +48,6 @@ def download (scraper:object, tiktok_url:str, title:str):
         for chunk in res.iter_content (chunk_size=8000):
             file.write (chunk)
 
+    return file_path
+
     

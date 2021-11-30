@@ -64,3 +64,5 @@ All **configurations** are saved in the **config.json file**, so **you can edit 
 SETTINGS CHROME: 
 Extensions
 Download folder
+
+youtube limit: 15 uploads per day
