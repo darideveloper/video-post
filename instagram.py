@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 
 def upload (scraper:object, file_path:str, title:str, description:str, tags:list): 
-    """ Upload video to yourube shorts """
+    """ Upload video to instagram reels """
 
     print ("\tUploading video to Instagram Reels...")
 
@@ -47,5 +47,3 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
     selector_share = ".qF0y9.Igw0E.IwRSH.eGOV_._4EzTm.XfCBB.g6RW6"
     scraper.click (selector_share)
     time.sleep (15)
-
-    print ("\t\tInstagram done.")

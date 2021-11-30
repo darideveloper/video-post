@@ -1,6 +1,6 @@
 import os
 import time
-import requests
+import downloader
 
 def download (scraper:object, tiktok_url:str, title:str):
     """Download video from tictok and save it in downloads folder
@@ -41,13 +41,8 @@ def download (scraper:object, tiktok_url:str, title:str):
     extension = downlod_link[separator+1:]
 
     # Download file
-    res = requests.get (downlod_link)
-    res.raise_for_status()
     file_path = os.path.join (os.path.dirname (__file__), "downloads", f"{title}.{extension}")
-    with open (file_path, "wb") as file:
-        for chunk in res.iter_content (chunk_size=8000):
-            file.write (chunk)
-
+    downloader.download (downlod_link, file_path)
     return file_path
 
     

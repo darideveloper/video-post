@@ -1,7 +1,7 @@
 import time
 
 def upload (scraper:object, file_path:str, title:str, description:str, tags:list): 
-    """ Upload video to yourube shorts """
+    """ Upload video to youtube shorts """
 
     print ("\tUploading video to Youtube Shorts...")
 
@@ -72,5 +72,3 @@ def upload (scraper:object, file_path:str, title:str, description:str, tags:list
     selector_publish = "#done-button"
     scraper.click (selector_publish)
     time.sleep (15)
-
-    print ("\t\tYoutube done.")

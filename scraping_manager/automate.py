@@ -120,7 +120,8 @@ class Web_scraping ():
             capabilities = None
 
         if self.__download_folder:
-            prefs = {"download.default_directory" : f"{self.__download_folder}"}
+            prefs = {"download.default_directory" : f"{self.__download_folder}", 
+                    "download.prompt_for_download": True}
             options.add_experimental_option("prefs",prefs)
 
         if self.__extensions:
