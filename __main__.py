@@ -1,5 +1,6 @@
 import os
 import download 
+import shutil
 import globals
 from uploaders import instagram, twitter, youtube, facebook
 from config import Config
@@ -129,6 +130,10 @@ def main ():
                             # Upload video to twitter
                             twitter.upload (file_converted, title, description, tags)
                             uploaded_twitter = "yes"
+
+                            # Move twitter file to done folder
+                            shutil.move (file_converted, file_converted.replace("downloads", "done"))
+
                     else:
                         print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
                     
@@ -140,6 +145,9 @@ def main ():
                     # End browser
                     globals.scraper.kill()
                     start_scraper ()
+
+                    # Move file to done folder
+                    shutil.move (file_path, file_path.replace("downloads", "done"))
 
         # Add row to output data
         output_data.append ([
