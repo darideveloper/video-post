@@ -89,7 +89,6 @@ class Web_scraping ():
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
         options.add_experimental_option("excludeSwitches", ["enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
         
         if self.__headless:        
             options.add_argument("--window-size=1920,1080")

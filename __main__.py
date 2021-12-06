@@ -1,7 +1,7 @@
 import os
 import download 
 import globals
-from uploaders import instagram, twitter, youtube
+from uploaders import instagram, twitter, youtube, facebook
 from config import Config
 from moviepy.editor import VideoFileClip
 from spreadsheet_manager.xlsx import SS_manager
@@ -66,16 +66,34 @@ def main ():
     upload_youtube = credentials.get_credential("upload_youtube")
 
     # Main loop for each video
-    for video_link, title, description, tags_text, status in videos_data[1:]:
+    output_data = []
+    for row in videos_data[1:]:
+
+        video_link = row[0]
+        title = row[1]
+        description = row[2]
+        tags_text = row[3]
+        status = row[4]
+
+        # Default values for ourput uploaded in spreadsheet
+        uploaded_instagram = "no"
+        uploaded_facebook = "no"
+        uploaded_twitter = "no"
+        uploaded_youtube = "no"
         
-        # Tags to list
-        tags = tags_text.split(",")
 
         # Validate video link
-        if video_link:
+        if not video_link:
+            break
+        else:
+
+            # Tags to list
+            tags = tags_text.split(",")
 
             # Validate video status
             if not status or status == "no": 
+
+                status = "yes"
 
                 # Download video
                 print (f"\nVideo: {title}")
@@ -91,10 +109,12 @@ def main ():
                         # Upload video to youtube
                         if upload_youtube:
                             youtube.upload (file_path, title, description, tags)
+                            uploaded_youtube = "yes"
 
                         # Upload video to instagram
                         if upload_instagram:
                             instagram.upload (file_path, title, description, tags)
+                            uploaded_instagram = "yes"
                     else:
                         print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
 
@@ -108,14 +128,40 @@ def main ():
 
                             # Upload video to twitter
                             twitter.upload (file_converted, title, description, tags)
+                            uploaded_twitter = "yes"
                     else:
                         print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
                     
                     # Post in faebook page without time validation
+                    if upload_facebook:
+                        facebook.upload (file_path, title, description, tags)
+                        uploaded_facebook = "yes"
+
+                    # End browser
+                    globals.scraper.kill()
+                    start_scraper ()
+
+        # Add row to output data
+        output_data.append ([
+            video_link, 
+            title, 
+            description, 
+            tags_text, 
+            status, 
+            uploaded_instagram, 
+            uploaded_facebook, 
+            uploaded_twitter, 
+            uploaded_youtube
+        ])
 
 
     # End browser
     globals.scraper.kill()
+
+    # Update data in output file
+    ss.write_data (output_data, start_row=2, start_column=1)
+    ss.save ()
+    print ("Done")
 
 
 if __name__ == "__main__":
