@@ -18,7 +18,7 @@ def start_scraper ():
     """
 
 
-    # Credentials
+    # Get browser Credentials
     credentials = Config()
     headless = not credentials.get_credential("show_browser")
     chrome_folder = credentials.get_credential("chrome_folder")
@@ -58,6 +58,13 @@ def main ():
     print ("Starting chrome...")
     start_scraper ()
 
+    # Get upload Credentials
+    credentials = Config()
+    upload_instagram = credentials.get_credential("upload_instagram")
+    upload_facebook = credentials.get_credential("upload_facebook")
+    upload_twitter = credentials.get_credential("upload_twitter")
+    upload_youtube = credentials.get_credential("upload_youtube")
+
     # Main loop for each video
     for video_link, title, description, tags_text, status in videos_data[1:]:
         
@@ -79,28 +86,36 @@ def main ():
                     
                     duration = get_video_duration (file_path)
 
-                    # # Validate duration for youtube and instagram
-                    # if duration <= 60:
-                    #     # Upload video to youtube
-                    #     youtube.upload (file_path, title, description, tags)
+                    # Validate duration for youtube and instagram
+                    if duration <= 60:
+                        # Upload video to youtube
+                        if upload_youtube:
+                            youtube.upload (file_path, title, description, tags)
 
-                    #     # Upload video to instagram
-                    #     instagram.upload (file_path, title, description, tags)
-                    # else:
-                    #     print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
+                        # Upload video to instagram
+                        if upload_instagram:
+                            instagram.upload (file_path, title, description, tags)
+                    else:
+                        print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
 
                     # Validate duration for twitter
-                    # if duration <= 140: 
-                    #     # Convert video
-                    #     file_converted = twitter.convert (file_path)
-                    #     globals.scraper.kill ()
-                    #     start_scraper ()
+                    if duration <= 140:
+                        if upload_twitter: 
+                            # Convert video
+                            file_converted = twitter.convert (file_path)
+                            globals.scraper.kill ()
+                            start_scraper ()
 
-                    #     # Upload video to twitter
-                    #     twitter.upload (file_converted, title, description, tags)
-                    # else:
-                    #     print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
+                            # Upload video to twitter
+                            twitter.upload (file_converted, title, description, tags)
+                    else:
+                        print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
+                    
+                    # Post in faebook page without time validation
 
+
+    # End browser
+    globals.scraper.kill()
 
 
 if __name__ == "__main__":
