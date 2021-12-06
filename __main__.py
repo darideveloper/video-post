@@ -75,13 +75,10 @@ def main ():
         description = row[2]
         tags_text = row[3]
         status = row[4]
-
-        # Default values for ourput uploaded in spreadsheet
-        uploaded_instagram = "no"
-        uploaded_facebook = "no"
-        uploaded_twitter = "no"
-        uploaded_youtube = "no"
-        
+        uploaded_instagram = row[4]
+        uploaded_facebook = row[6]
+        uploaded_twitter = row[7]
+        uploaded_youtube = row[8]
 
         # Validate video link
         if not video_link:
@@ -94,6 +91,11 @@ def main ():
             # Validate video status
             if not status or status == "no": 
 
+                # Default values for output uploaded in spreadsheet
+                uploaded_instagram = "no"
+                uploaded_facebook = "no"
+                uploaded_twitter = "no"
+                uploaded_youtube = "no"
                 status = "yes"
 
                 # Download video
