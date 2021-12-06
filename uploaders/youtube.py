@@ -10,6 +10,14 @@ def upload (file_path:str, title:str, description:str, tags:list):
     youtube_url = "https://studio.youtube.com/"
     globals.scraper.set_page (youtube_url)
 
+    # Ignore browser warning
+    selector_go_shorts = "body > div > div.buttons > a.button.text-button.black-secondary:only-child"
+    try:
+        globals.scraper.click (selector_go_shorts)
+    except:
+        pass
+    globals.scraper.refresh_selenium()
+
     # Dimiss button
     selector_continue = "#dismiss-button"
     try:

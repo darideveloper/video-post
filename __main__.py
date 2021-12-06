@@ -90,16 +90,16 @@ def main ():
                     #     print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
 
                     # Validate duration for twitter
-                    if duration <= 140: 
-                        # Convert video
-                        file_converted = twitter.convert (file_path)
-                        globals.scraper.kill ()
-                        start_scraper ()
+                    # if duration <= 140: 
+                    #     # Convert video
+                    #     file_converted = twitter.convert (file_path)
+                    #     globals.scraper.kill ()
+                    #     start_scraper ()
 
-                        # Upload video to twitter
-                        twitter.upload (file_converted, title, description, tags)
-                    else:
-                        print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
+                    #     # Upload video to twitter
+                    #     twitter.upload (file_converted, title, description, tags)
+                    # else:
+                    #     print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
 
 
 
