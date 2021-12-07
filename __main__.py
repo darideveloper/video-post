@@ -21,11 +21,10 @@ def start_scraper ():
 
     # Get browser Credentials
     credentials = Config()
-    headless = not credentials.get_credential("show_browser")
     chrome_folder = credentials.get_credential("chrome_folder")
 
     # Start browser for install extensions
-    globals.scraper = Web_scraping (headless=headless, 
+    globals.scraper = Web_scraping (headless=False, 
                                     download_folder=globals.download_folder,
                                     chrome_folder=chrome_folder)   
 
