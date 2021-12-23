@@ -11,7 +11,7 @@ Download videos from tiktok and post in:
 
 The program does the following for each video in the **videos.xlsx** file:
 
-1. Download the video with https://snaptik.app/en page and save it in **downloads** folder with the name from the excel file.
+1. Validate the videos in **downloads** folder with the name from the excel file.
 2. Validate the duration of the video for each social network, and made the necessaries file conversions. 
 
 Note: each social network have different limits of duration for the videos.
