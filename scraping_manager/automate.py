@@ -17,11 +17,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 current_file = os.path.basename(__file__)
   
 # Diable web driver manager logs 
-logger = logging.getLogger("webdriver_manager")
-logger.setLevel(logging.ERROR)
+logger_webdriver = logging.getLogger("webdriver_manager")
+logger_webdriver.setLevel(logging.ERROR)
 
-logger = logging.getLogger("selenium")
-logger.setLevel(logging.ERROR)
+logger_selenium = logging.getLogger("selenium")
+logger_selenium.setLevel(logging.ERROR)
 
 class Web_scraping (): 
     """
@@ -29,10 +29,10 @@ class Web_scraping ():
     """
     
     def __init__ (
-            self, web_page="", headless=True, time_out=0, 
+            self, web_page="", headless=False, time_out=0, 
             proxy_server="", proxy_port="", proxy_user="", proxy_pass="", 
-            chrome_folder="", user_agent=True, capabilities=False,
-            download_folder="", extensions=[]): 
+            chrome_folder="", user_agent=False, capabilities=False,
+            download_folder="", extensions=[], incognito=False): 
         """
         Constructor of the class
         """
@@ -53,9 +53,7 @@ class Web_scraping ():
         self.__capabilities = capabilities
         self.__download_folder = download_folder
         self.__extensions = extensions
-        
-        # Desable modules logs
-        logging.disable(logging.DEBUG)
+        self.__incognito = incognito
         
         # Create and instance of the web browser 
         self.__set_browser_instance()
@@ -86,8 +84,7 @@ class Web_scraping ():
         options.add_argument("disable-infobars")
 
         # Experimentals
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('excludeSwitches', ['enable-logging', "enable-automation"])
         options.add_experimental_option('useAutomationExtension', False)
         
         if self.__headless:        
@@ -131,6 +128,11 @@ class Web_scraping ():
             for extension in self.__extensions:
                 options.add_extension(extension)
 
+        if self.__incognito:
+            options.add_argument("--incognito")
+
+        options.add_argument("--disable-blink-features=AutomationControlled")
+
 
         
         # Set configuration to  and create instance
@@ -139,7 +141,7 @@ class Web_scraping ():
                                             print_first_line=False).install()
         self.driver = webdriver.Chrome(chromedriver, 
                                 options=options, 
-                                service_log_path=None, 
+                                service_log_path=None,
                                 desired_capabilities=capabilities)
 
         # Clean terminal

@@ -28,7 +28,7 @@ def upload (file_path:str, title:str, description:str, tags:list):
     time.sleep (10)
     
     # Go to video details
-    selector_continue = "button.sqdOP.yWX7d.y3zKF"
+    selector_continue = ".qF0y9.Igw0E.IwRSH.eGOV_._4EzTm.XfCBB.g6RW6"
     globals.scraper.click (selector_continue)
     time.sleep (2)
     globals.scraper.refresh_selenium ()

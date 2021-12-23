@@ -1,5 +1,4 @@
 import os
-import download 
 import shutil
 import globals
 from uploaders import instagram, twitter, youtube, facebook
@@ -28,16 +27,17 @@ def start_scraper ():
                                     download_folder=globals.download_folder,
                                     chrome_folder=chrome_folder)   
 
-def get_video_duration (video_path:str):
+def get_video_duration (file_path:str):
     """Get the duration in seconds from specific video
 
     Args:
-        video_path (str): path of the video
+        file_path (str): path of the video
 
     Returns:
         float: duation in seconds
     """
-    clip = VideoFileClip(video_path)
+    clip = VideoFileClip(file_path)
+    clip.close()
     return clip.duration
 
 def main (): 
@@ -69,40 +69,47 @@ def main ():
     output_data = []
     for row in videos_data[1:]:
 
-        video_link = row[0]
+        video_name = row[0]
         title = row[1]
         description = row[2]
         tags_text = row[3]
-        status = row[4]
+        processed = row[4]
         uploaded_instagram = row[4]
         uploaded_facebook = row[6]
         uploaded_twitter = row[7]
         uploaded_youtube = row[8]
 
         # Validate video link
-        if not video_link:
+        if not video_name:
             break
         else:
+
 
             # Tags to list
             tags = tags_text.split(",")
 
-            # Validate video status
-            if not status or status == "no": 
+            # Validate video processed
+            if not processed or processed == "no": 
+                
+                print (f"Current video: {video_name}")
 
                 # Default values for output uploaded in spreadsheet
                 uploaded_instagram = "no"
                 uploaded_facebook = "no"
                 uploaded_twitter = "no"
                 uploaded_youtube = "no"
-                status = "yes"
+                processed = "yes"
 
                 # Download video
-                print (f"\nVideo: {title}")
-                file_path = download.tiktok (video_link, title)
+                # print (f"\nVideo: {title}")
+                # file_path = download.tiktok (video_name, title)
 
-                # Ipload video
-                if file_path: 
+                # Validate video path
+                file_path = os.path.join (globals.current_folder, "downloads", video_name)
+                if not os.path.isfile (file_path):
+                    print (f"\tFile not found: {file_path}")
+
+                else: 
                     
                     duration = get_video_duration (file_path)
 
@@ -148,21 +155,20 @@ def main ():
                     start_scraper ()
 
                     # Move file to done folder
-                    shutil.move (file_path, file_path.replace("downloads", "done"))
+                    os.replace (file_path, file_path.replace("downloads", "done"))
 
         # Add row to output data
         output_data.append ([
-            video_link, 
+            video_name, 
             title, 
             description, 
             tags_text, 
-            status, 
+            processed, 
             uploaded_instagram, 
             uploaded_facebook, 
             uploaded_twitter, 
             uploaded_youtube
         ])
-
 
     # End browser
     globals.scraper.kill()

@@ -30,9 +30,9 @@ def upload (file_path:str, title:str, description:str, tags:list):
     selector_upload = "#upload-button"
     selector_upload_icon = "#upload-icon"
     try:
-        globals.scraper.click (selector_upload)
+        globals.scraper.click_js (selector_upload)
     except:
-        globals.scraper.click (selector_upload_icon)
+        globals.scraper.click_js (selector_upload_icon)
     globals.scraper.refresh_selenium()
 
     # Upload file
