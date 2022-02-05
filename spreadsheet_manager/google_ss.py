@@ -62,13 +62,3 @@ class SS_manager ():
 
         records = self.worksheet.get_all_records()
         return records
-
-
-path = "D:\\Sync\\Dari Developer\\projects resell\\video post\\sheets-340407-d8642222c103.json"
-link = "https://docs.google.com/spreadsheets/d/1Eh1cNEcCkgpN9NYtx7_aTUBhNP37zXvzxQWuufPiw0M/edit?usp=sharing"
-ss_manager = SS_manager (link, path, sheet_name=None)
-
-ss_manager.write_data ([
-    ["hola", "mundo"],
-    ["dari", "developer"]
-], column=5, row=4)
