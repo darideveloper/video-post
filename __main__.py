@@ -7,11 +7,6 @@ from moviepy.editor import VideoFileClip
 from spreadsheet_manager.google_ss import SS_manager
 from scraping_manager.automate import Web_scraping
 
-
-# Project paths and global variables
-globals.current_folder = os.path.dirname (__file__)
-globals.download_folder = os.path.join (globals.current_folder, "downloads")
-
 # Get credentials
 credentials = Config()
 chrome_folder = credentials.get ("chrome_folder")
@@ -23,6 +18,12 @@ facebook = credentials.get ("facebook")
 twitter = credentials.get ("twitter")
 youtube = credentials.get ("youtube")
 
+# Global variables
+globals.current_folder = os.path.dirname (__file__)
+globals.download_folder = os.path.join (globals.current_folder, "downloads")
+globals.chrome_folder = chrome_folder
+
+
 def start_scraper ():
     """ Start selenium with user settings and save as global variable
     """
@@ -31,7 +32,7 @@ def start_scraper ():
     # Start browser for install extensions
     globals.scraper = Web_scraping (headless=False, 
                                     download_folder=globals.download_folder,
-                                    chrome_folder=chrome_folder)   
+                                    chrome_folder=globals.chrome_folder)   
 
 def get_video_duration (file_path:str):
     """Get the duration in seconds from specific video
@@ -58,34 +59,29 @@ def main ():
 
     # Get data from file
     print ("connecting with google sheet...")
-    print (sheet_url, api_key)
     ss = SS_manager(sheet_url, api_key)
     videos_data = ss.get_data()
-
-    print (videos_data)
-
-    import sys 
-    sys.exit ()
 
     print ("Starting chrome...")
     start_scraper ()
 
     # Main loop for each video
     output_data = []
-    for row in videos_data[1:]:
+    for row in videos_data:
 
-        video_name = row[0]
-        title = row[1]
-        description = row[2]
-        tags_text = row[3]
-        processed = row[4]
-        uploaded_instagram = row[4]
-        uploaded_facebook = row[6]
-        uploaded_twitter = row[7]
-        uploaded_youtube = row[8]
+        video_url_name = row["url or name"]
+        title = row["title"]
+        description = row["description"]
+        tags_text = row["tags"]
+        processed = row["processed"]
+        uploaded_instagram = row["uploaded instagram"]
+        uploaded_facebook = row["uploaded facebook"]
+        uploaded_twitter = row["uploaded twitter"]
+        uploaded_youtube = row["uploaded youtube"]
+        uploaded_tiktok = row["uploaded tiktok"]
 
         # Validate video link
-        if not video_name:
+        if not video_url_name:
             break
         else:
 
@@ -96,21 +92,24 @@ def main ():
             # Validate video processed
             if not processed or processed == "no": 
                 
-                print (f"Current video: {video_name}")
+                print (f"Current video: {title}")
 
                 # Default values for output uploaded in spreadsheet
                 uploaded_instagram = "no"
                 uploaded_facebook = "no"
                 uploaded_twitter = "no"
                 uploaded_youtube = "no"
+                uploaded_tiktok = "no"
                 processed = "yes"
+
+                continue
 
                 # Download video
                 # print (f"\nVideo: {title}")
-                # file_path = download.tiktok (video_name, title)
+                # file_path = download.tiktok (video_url_name, title)
 
                 # Validate video path
-                file_path = os.path.join (globals.current_folder, "downloads", video_name)
+                file_path = os.path.join (globals.current_folder, "downloads", video_url_name)
                 if not os.path.isfile (file_path):
                     print (f"\tFile not found: {file_path}")
 
@@ -164,7 +163,7 @@ def main ():
 
         # Add row to output data
         output_data.append ([
-            video_name, 
+            video_url_name, 
             title, 
             description, 
             tags_text, 
@@ -178,10 +177,10 @@ def main ():
     # End browser
     globals.scraper.kill()
 
-    # Update data in output file
-    ss.write_data (output_data, start_row=2, start_column=1)
-    ss.save ()
-    print ("Done")
+    # # Update data in output file
+    # ss.write_data (output_data, start_row=2, start_column=1)
+    # ss.save ()
+    # print ("Done")
 
 
 if __name__ == "__main__":

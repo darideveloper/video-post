@@ -53,7 +53,6 @@ class SS_manager ():
                     column_index = row_data.index (cell) + column
 
                     # Write data in gss
-                    print (row_index, column_index, cell)
                     self.write_cell (cell, row_index, column_index)
 
 
