@@ -1,6 +1,8 @@
 import os
+import sys
 import shutil
 import globals
+import download
 from uploaders import instagram, twitter, youtube, facebook
 from config import Config
 from moviepy.editor import VideoFileClip
@@ -102,17 +104,21 @@ def main ():
                 uploaded_tiktok = "no"
                 processed = "yes"
 
+                # Download video
+                if "www.tiktok.com" in video_url_name:
+                    # Download tiktok video
+                    file_path = download.tiktok (video_url_name, title)
+                else:
+                    # Validate video path
+                    file_path = os.path.join (globals.current_folder, "downloads", video_url_name)
+                    if not os.path.isfile (file_path):
+                        raise FileNotFoundError (file_path)
+
+                print (file_path)
                 continue
 
-                # Download video
-                # print (f"\nVideo: {title}")
-                # file_path = download.tiktok (video_url_name, title)
-
-                # Validate video path
-                file_path = os.path.join (globals.current_folder, "downloads", video_url_name)
-                if not os.path.isfile (file_path):
-                    print (f"\tFile not found: {file_path}")
-
+                if False:
+                    print (False)
                 else: 
                     
                     duration = get_video_duration (file_path)
