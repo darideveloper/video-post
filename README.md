@@ -44,6 +44,12 @@ To run the project, the following programs must be installed::
 
 * [Google Chrome](https://www.google.com/intl/es/chrome) last version
 
+## Generate Google API Key
+
+You can learn how to generate an API Key for google spreadsheets, in this [tutorial](https://github.com/DariHernandez/generate-google-sheets-api-key)
+
+## Create spreadsheet
+
 # How to use
 
 ## Setup chrome
