@@ -22,6 +22,7 @@ If a video is longer than the page limits, it is automatically skipped.
 * **facebook:** 240 minutes
 * **youtube shorts:** 60 seconds
 * **instagram reels:** 60 seconds
+* **tiktok:** 60 seconds
 * **twitter:** 2:20 minutes
 
 Additional, for upload the videos to twitter, they require and extra conversion with the page: https://servicios-web.online-convert.com/es/convertir-para-twitter (This step is done automatically)

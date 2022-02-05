@@ -3,7 +3,7 @@ import sys
 import shutil
 import globals
 import download
-from uploaders import instagram, twitter, youtube, facebook
+from uploaders import instagram, twitter, youtube, facebook, tiktok
 from config import Config
 from moviepy.editor import VideoFileClip
 from spreadsheet_manager.google_ss import SS_manager
@@ -128,8 +128,13 @@ def main ():
                     if upload_instagram:
                         instagram.upload (file_path, title, description, tags)
                         uploaded_instagram = "yes"
+
+                    # Upload video to tiktok
+                    if upload_tiktok:
+                        tiktok.upload (file_path, title, description, tags)
+                        uploaded_tiktok = "yes"
                 else:
-                    print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
+                    print ("\tYoutube, Instagram and Tiktok: video skipped (60 sec it's max time for this pages)")
 
                 # Validate duration for twitter
                 if duration <= 140:

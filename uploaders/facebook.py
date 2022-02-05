@@ -1,7 +1,5 @@
 import time
 import globals
-from config import Config
-from selenium.webdriver.common.keys import Keys
 
 def upload (facebook_page, file_path:str, title:str, description:str, tags:list): 
     """ Upload video to facebook page """
