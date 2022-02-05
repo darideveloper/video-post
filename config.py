@@ -20,7 +20,7 @@ class Config ():
         if not config_exist: 
             print (f"NOT FILE {self.config_path}")
 
-    def get_credential (self, credential=""): 
+    def get (self, credential=""): 
         """
         Get specific credential from config file
         """
@@ -42,7 +42,7 @@ class Config ():
         # Close file
         config_file.close()
 
-    def get_credentials (self): 
+    def get_all (self): 
         """
         return all crdentials from file
         """
@@ -78,7 +78,7 @@ class Config ():
             config_file.write(json.dumps(credentials))
             
 
-    def update_credential (self, credential="", value=""): 
+    def update (self, credential="", value=""): 
         """
         Update specific credential in config file
         """
@@ -90,7 +90,7 @@ class Config ():
         with open (self.config_path, "w") as config_file:
             config_file.write(json.dumps(config_data))
 
-    def update_credentials (self, credentials, values): 
+    def update_all (self, credentials, values): 
         """
         Update credentials
         """
@@ -98,4 +98,4 @@ class Config ():
         for cred_config, cred_gui in credentials.items(): 
             
             new_credential = values[cred_gui]
-            update_credential (cred_config, new_credential)
+            self.update (cred_config, new_credential)
