@@ -37,11 +37,12 @@ def upload (file_path:str, title:str, description:str, tags:list):
     globals.scraper.refresh_selenium ()
     
     # Video title and description
-    selector_details = 'textarea'
+    selector_details = 'textarea[aria-label="Write a caption..."]'
     tag_text = ""
     for tag in tags:
         tag_text += f"\n#{tag}"
     text_formated = f"{title}\n\n{description}\n{tag_text}"
+    time.sleep (1)
     globals.scraper.send_data (selector_details, text_formated)
 
     # Share video

@@ -3,19 +3,25 @@ import globals
 from config import Config
 from selenium.webdriver.common.keys import Keys
 
-def upload (file_path:str, title:str, description:str, tags:list): 
+def upload (facebook_page, file_path:str, title:str, description:str, tags:list): 
     """ Upload video to facebook page """
 
     print ("\tUploading video to Facebook Page...")
 
-    # Get page
-    credentials = Config()
-    facebook_page = credentials.get_credential ("facebook_page")
-
     # Open page 
     globals.scraper.set_page (facebook_page)
     time.sleep (5)
- 
+
+    # Start new post
+    selector_new_post = 'div[aria-label="Create post"]'
+    globals.scraper.click (selector_new_post)
+    time.sleep (2)
+
+    # Select to upload photo or video
+    selector_photo_video = '[aria-label="Photo/Video"][role="button"]'
+    globals.scraper.click (selector_photo_video)
+    time.sleep (2)
+
     # Upload file
     selector_input = 'input[accept="image/*,image/heif,image/heic,video/*,video/mp4,video/x-m4v,video/x-matroska,.mkv"]'
     globals.scraper.send_data (selector_input, file_path)

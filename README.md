@@ -99,13 +99,15 @@ This is the content of the file (copy, paste, and replace with your datz):
 ```json
 {
  "chrome_folder": "C:\\Users\\{your user name}\\AppData\\Local\\Google\\Chrome\\User Data",
- "facebook_page": "https://business.facebook.com/Sample-107579735102375/?business_id=133263535761366",
+ "facebook_page": "https://www.facebook.com/your_page_name/?ref=pages_you_manage",
  "api_key": "{project folder}\\video post\\sheets-340407-d8642222c103.json",
  "sheet_url": "https://docs.google.com/spreadsheets/d/1Eh1...iw0M/edit?usp=sharing",
  "instagram": false,
  "facebook": false,
  "twitter": true,
- "youtube": false
+ "youtube": false,
+ "tiktok": false
+
 }
 ```
 

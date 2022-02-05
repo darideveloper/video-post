@@ -15,10 +15,11 @@ chrome_folder = credentials.get ("chrome_folder")
 facebook_page = credentials.get ("facebook_page")
 api_key = credentials.get ("api_key")
 sheet_url = credentials.get ("sheet_url")
-instagram = credentials.get ("instagram")
-facebook = credentials.get ("facebook")
-twitter = credentials.get ("twitter")
-youtube = credentials.get ("youtube")
+upload_instagram = credentials.get ("instagram")
+upload_facebook = credentials.get ("facebook")
+upload_twitter = credentials.get ("twitter")
+upload_youtube = credentials.get ("youtube")
+upload_tiktok = credentials.get ("tiktok")
 
 # Global variables
 globals.current_folder = os.path.dirname (__file__)
@@ -69,7 +70,7 @@ def main ():
 
     # Main loop for each video
     output_data = []
-    for row in videos_data:
+    for row in videos_data[2:]:
 
         video_url_name = row["url or name"]
         title = row["title"]
@@ -114,58 +115,51 @@ def main ():
                     if not os.path.isfile (file_path):
                         raise FileNotFoundError (file_path)
 
-                print (file_path)
-                continue
+                duration = get_video_duration (file_path)
 
-                if False:
-                    print (False)
-                else: 
-                    
-                    duration = get_video_duration (file_path)
+                # Validate duration for youtube and instagram
+                if duration <= 60:
+                    # Upload video to youtube
+                    if upload_youtube:
+                        youtube.upload (file_path, title, description, tags)
+                        uploaded_youtube = "yes"
 
-                    # Validate duration for youtube and instagram
-                    if duration <= 60:
-                        # Upload video to youtube
-                        if upload_youtube:
-                            youtube.upload (file_path, title, description, tags)
-                            uploaded_youtube = "yes"
+                    # Upload video to instagram
+                    if upload_instagram:
+                        instagram.upload (file_path, title, description, tags)
+                        uploaded_instagram = "yes"
+                else:
+                    print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
 
-                        # Upload video to instagram
-                        if upload_instagram:
-                            instagram.upload (file_path, title, description, tags)
-                            uploaded_instagram = "yes"
-                    else:
-                        print ("\tYoutube and Instagram: video skipped (60 sec it's max time for youtube shorts and instagram reels)")
+                # Validate duration for twitter
+                if duration <= 140:
+                    if upload_twitter: 
+                        # Convert video
+                        file_converted = twitter.convert (file_path)
+                        globals.scraper.kill ()
+                        start_scraper ()
 
-                    # Validate duration for twitter
-                    if duration <= 140:
-                        if upload_twitter: 
-                            # Convert video
-                            file_converted = twitter.convert (file_path)
-                            globals.scraper.kill ()
-                            start_scraper ()
+                        # Upload video to twitter
+                        twitter.upload (file_converted, title, description, tags)
+                        uploaded_twitter = "yes"
 
-                            # Upload video to twitter
-                            twitter.upload (file_converted, title, description, tags)
-                            uploaded_twitter = "yes"
+                        # Move twitter file to done folder
+                        shutil.move (file_converted, file_converted.replace("downloads", "done"))
 
-                            # Move twitter file to done folder
-                            shutil.move (file_converted, file_converted.replace("downloads", "done"))
+                else:
+                    print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
+                
+                # Post in faebook page without time validation
+                if upload_facebook:
+                    facebook.upload (facebook_page, file_path, title, description, tags)
+                    uploaded_facebook = "yes"
 
-                    else:
-                        print ("\tTwitter: video skipped (2:20 min it's max time for twitter)")
-                    
-                    # Post in faebook page without time validation
-                    if upload_facebook:
-                        facebook.upload (file_path, title, description, tags)
-                        uploaded_facebook = "yes"
+                # End browser
+                globals.scraper.kill()
+                start_scraper ()
 
-                    # End browser
-                    globals.scraper.kill()
-                    start_scraper ()
-
-                    # Move file to done folder
-                    os.replace (file_path, file_path.replace("downloads", "done"))
+                # Move file to done folder
+                # os.replace (file_path, file_path.replace("downloads", "done"))
 
         # Add row to output data
         output_data.append ([
