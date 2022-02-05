@@ -1,5 +1,6 @@
 selenium==3.141.0
 webdriver-manager==3.4.1
-openpyxl==3.0.7
 requests==2.25.1
 moviepy==1.0.3
+gspread==4.0.1
+oauth2client==4.1.3
