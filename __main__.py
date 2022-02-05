@@ -4,23 +4,29 @@ import globals
 from uploaders import instagram, twitter, youtube, facebook
 from config import Config
 from moviepy.editor import VideoFileClip
-from spreadsheet_manager.xlsx import SS_manager
+from spreadsheet_manager.google_ss import SS_manager
 from scraping_manager.automate import Web_scraping
 
 
 # Project paths and global variables
 globals.current_folder = os.path.dirname (__file__)
-globals.videos_path = os.path.join (globals.current_folder, "videos.xlsx")
 globals.download_folder = os.path.join (globals.current_folder, "downloads")
+
+# Get credentials
+credentials = Config()
+chrome_folder = credentials.get ("chrome_folder")
+facebook_page = credentials.get ("facebook_page")
+api_key = credentials.get ("api_key")
+sheet_url = credentials.get ("sheet_url")
+instagram = credentials.get ("instagram")
+facebook = credentials.get ("facebook")
+twitter = credentials.get ("twitter")
+youtube = credentials.get ("youtube")
 
 def start_scraper ():
     """ Start selenium with user settings and save as global variable
     """
 
-
-    # Get browser Credentials
-    credentials = Config()
-    chrome_folder = credentials.get_credential("chrome_folder")
 
     # Start browser for install extensions
     globals.scraper = Web_scraping (headless=False, 
@@ -42,28 +48,27 @@ def get_video_duration (file_path:str):
 
 def main (): 
     """
-    Download videos from tiktok and post it in:
-        instagram reels
-        twitter
-        youtube shorts
-        facebook business
+    Download videos from tiktok and post in: 
+        * facebook page
+        * youtube shorts
+        * instagram reels
+        * twitter
+        * tiktok
     """
 
     # Get data from file
-    print ("reading xlsx file...")
-    ss = SS_manager(globals.videos_path)
-    ss.set_sheet ("videos")
+    print ("connecting with google sheet...")
+    print (sheet_url, api_key)
+    ss = SS_manager(sheet_url, api_key)
     videos_data = ss.get_data()
+
+    print (videos_data)
+
+    import sys 
+    sys.exit ()
 
     print ("Starting chrome...")
     start_scraper ()
-
-    # Get upload Credentials
-    credentials = Config()
-    upload_instagram = credentials.get_credential("upload_instagram")
-    upload_facebook = credentials.get_credential("upload_facebook")
-    upload_twitter = credentials.get_credential("upload_twitter")
-    upload_youtube = credentials.get_credential("upload_youtube")
 
     # Main loop for each video
     output_data = []

@@ -49,7 +49,7 @@ To run the project, the following programs must be installed::
 
 ## Generate Google API Key
 
-You can learn how to generate an API Key for google sheets, in this [tutorial](https://github.com/DariHernandez/generate-google-sheets-api-key)
+You can learn how to generate an API Key for google sheets, in this [tutorial](https://github.com/DariHernandez/tutorials/tree/master/generate%20google%20sheets%20api%20key)
 
 ## Create spreadsheet
 
@@ -92,12 +92,16 @@ Before running the project, you need to do some extra steeps for prepare your go
 
 ## Config file
 
-All **configurations** are saved in the **config.json file**, so **you can edit it manually**
+All **configurations** are saved in a **config.json file**, so **you can create and edit it manually**
+
+This is the content of the file (copy, paste, and replace with your datz):
 
 ```json
 {
  "chrome_folder": "C:\\Users\\{your user name}\\AppData\\Local\\Google\\Chrome\\User Data",
  "facebook_page": "https://business.facebook.com/Sample-107579735102375/?business_id=133263535761366",
+ "api_key": "{project folder}\\video post\\sheets-340407-d8642222c103.json",
+ "sheet_url": "https://docs.google.com/spreadsheets/d/1Eh1...iw0M/edit?usp=sharing",
  "instagram": false,
  "facebook": false,
  "twitter": true,
@@ -107,6 +111,12 @@ All **configurations** are saved in the **config.json file**, so **you can edit 
 
 * ### chrome_folder
 The path of google chrome data. By default, in windows, there it in: **C:\\Users\\{your user name}\\AppData\\Local\\Google\\Chrome\\User Data**
+
+* ### api_key
+Path of your google api key in json format, generated in **Install > Generate Google API Key** section
+
+* ### sheet_url
+Link of the google sheet with edit permissions. Here a [tutorial](https://github.com/DariHernandez/tutorials/tree/master/share%20google%20sheet%20with%20edit%20permissions) about how to generate the link
 
 * ### facebook_page
 Link of your facebook page.
@@ -153,7 +163,7 @@ Only, before of each running, be sure of:
 
 **Kill/end** from task manager (windows) or htop (linux), **all google chrome processes**.
 
-Here a tutorial about how to [kill google chrome process in windows](https://github.com/DariHernandez/kill-google-chrome-in-windows)
+Here a tutorial about how to [kill google chrome process in windows](https://github.com/DariHernandez/tutorials/tree/master/kill%20google%20chrome%20in%20windows)
 
 ### Close google sheet
 
