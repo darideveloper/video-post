@@ -13,7 +13,9 @@ def upload (facebook_page, file_path:str, title:str, description:str, tags:list)
     # Start new post
     selector_new_post = 'div[aria-label="Create post"]'
     globals.scraper.click (selector_new_post)
+    globals.scraper.refresh_selenium () 
     time.sleep (2)
+
 
     # Select to upload photo or video
     selector_photo_video = '[aria-label="Photo/Video"][role="button"]'
