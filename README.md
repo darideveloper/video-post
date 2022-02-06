@@ -190,3 +190,24 @@ If you try to upload more videos without the verification, the program will rais
 
 For upload reels to instagram, we use the extension **INSSIST**.
 At this time, the **extension have a bug** that allow us to **post reels without limits**, but when the developers fix it, **you will need to pay for the extension** to continue using the reels (at the moment, there are no other alternatives).
+
+## Google chrome
+
+While the program is running, you will **not be able to use** your Google Chrome browser
+Also, make sure that when you start chrome, it **opens a new blank tab** (not the last open tabs), to avoid errors.
+
+## Files
+
+The program **automatically replaces** the files in the "done" and "downloads" folders. Make sure you don't have any important videos with the same names as the spreadsheet, or you will lose it
+
+## Updates
+
+This is a web automation project.
+Web automation **depends** entirely on the **structure of the page**, which means that **if any social network is updated** (for example, facebook) and changes the way videos are uploaded (a structural change (html) with or without changes layout (css)), **the project will need to be updated too**.
+
+You can change the code if you want, but in case **you need me for bug fixes**, the **changes** you made **will not be considered** and the work will start from the state of the project that I gave you.
+
+### Contact:
+[darideveloper@gmail.com](mailto:darideveloper@gmail.com)
+
+[hernandezdarifrancisco@gmail.com](mailto:hernandezdarifrancisco@gmail.com)

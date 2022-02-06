@@ -67,11 +67,8 @@ def main ():
     ss = SS_manager(sheet_url, api_key)
     videos_data = ss.get_data()
 
-    print ("Starting chrome...")
-    start_scraper ()
-
     # Main loop for each video
-    output_data = []
+    output_data = [[]]
     for row in videos_data:
 
         # Get data from row
@@ -104,13 +101,17 @@ def main ():
             now = datetime.datetime.now()
             if now > date_time:
                 print (f"\tVideo skipped. The current time ({now}) is greater than the publication time ({date_time}).")
+                output_data.append ([])
                 continue
 
             # Validate video processed
             if processed.lower().strip() == "yes":
                 print ("\tVideo omitted, already processed")
+                output_data.append ([])
                 continue
             else: 
+
+                start_scraper ()
                 
                 # Wait time
                 wait_time = date_time - now
@@ -181,13 +182,13 @@ def main ():
 
                 # End browser
                 globals.scraper.kill()
-                start_scraper ()
 
                 # Move file to done folder
-                # os.replace (file_path, file_path.replace("downloads", "done"))
+                os.replace (file_path, file_path.replace("downloads", "done"))
 
         # Add row to output data
         output_data.append ([
+            date_time_text,
             video_url_name, 
             title, 
             description, 
@@ -196,16 +197,19 @@ def main ():
             uploaded_instagram, 
             uploaded_facebook, 
             uploaded_twitter, 
-            uploaded_youtube
+            uploaded_youtube,
+            uploaded_tiktok
         ])
 
     # End browser
-    globals.scraper.kill()
+    try:
+        globals.scraper.kill()
+    except:
+        pass
 
-    # # Update data in output file
-    # ss.write_data (output_data, start_row=2, start_column=1)
-    # ss.save ()
-    # print ("Done")
+    # Update data in sheet
+    ss.worksheet.update (output_data)
+    print ("Done")
 
 
 if __name__ == "__main__":
