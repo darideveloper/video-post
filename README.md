@@ -64,6 +64,7 @@ The names of the columns are the following:
 
 *Note: all letters must be in lowercase and without spaces or extra characters*
 
+* date time
 * file or name
 * title	
 * description
@@ -145,6 +146,7 @@ Her the details about howe to use the columns in the google sheet:
 
 Column|description|sample
 |---|---|---|
+date time|Date and time in which the post should be published. Important: **dates must be in chronological order.** Format: mm/dd/yyyy h:m|02/05/2022 18:20
 url or name|tiktok video link or name of the file in the "downloads" folder (You can use any of the two and the program will detect it automatically)| https://www.tiktok.com/...8670874256902 or video1.mp4
 title|title of the video to post in all social networks| Dancing
 description|description / caption for add to the video| Hello, this is my first dancing video
@@ -155,6 +157,11 @@ uploaded facebook|if the video is already processed, show if it have been posted
 uploaded twitter|if the video is already processed, show if it have been posted in this social network. By default, **no**| no
 uploaded youtube|if the video is already processed, show if it have been posted in this social network. By default, **no**| yes
 uploaded tiktok|if the video is already processed, show if it have been posted in this social network. By default, **no**| yes
+
+### Sheet sample
+
+![google sheet](screenshots/sheet.PNG)
+
 
 ## Run program
 

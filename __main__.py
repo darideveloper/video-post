@@ -1,7 +1,9 @@
 import os
 import sys
+import time
 import shutil
 import globals
+import datetime
 import download
 from uploaders import instagram, twitter, youtube, facebook, tiktok
 from config import Config
@@ -70,8 +72,10 @@ def main ():
 
     # Main loop for each video
     output_data = []
-    for row in videos_data[2:]:
+    for row in videos_data:
 
+        # Get data from row
+        date_time_text = row["date time"]
         video_url_name = row["url or name"]
         title = row["title"]
         description = row["description"]
@@ -83,20 +87,36 @@ def main ():
         uploaded_youtube = row["uploaded youtube"]
         uploaded_tiktok = row["uploaded tiktok"]
 
+        # Tags to list
+        tags = tags_text.split(",")
+        
+        # Format date time
+        date_time = datetime.datetime.strptime(date_time_text, "%m/%d/%Y %H:%M")
+
         # Validate video link
         if not video_url_name:
             break
         else:
 
+            print (f"\nCurrent video: {title}")
 
-            # Tags to list
-            tags = tags_text.split(",")
+            # Time validation
+            now = datetime.datetime.now()
+            if now > date_time:
+                print (f"\tVideo skipped. The current time ({now}) is greater than the publication time ({date_time}).")
+                continue
 
             # Validate video processed
-            if not processed or processed == "no": 
+            if processed.lower().strip() == "yes":
+                print ("\tVideo omitted, already processed")
+                continue
+            else: 
                 
-                print (f"Current video: {title}")
-
+                # Wait time
+                wait_time = date_time - now
+                print (f"\tWaiting for the time: {date_time}...")
+                time.sleep (wait_time.total_seconds())
+                
                 # Default values for output uploaded in spreadsheet
                 uploaded_instagram = "no"
                 uploaded_facebook = "no"
