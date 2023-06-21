@@ -1,5 +1,5 @@
-<div><a href='https://github.com/github.com/darideveloper/blob/master/LICENSE' target='_blank'>
-            <img src='https://img.shields.io/github/license/github.com/darideveloper.svg?style=for-the-badge' alt='MIT License' height='30px'/>
+<div><a href='https://github.com/darideveloper/video-post/blob/master/LICENSE' target='_blank'>
+            <img src='https://img.shields.io/github/license/darideveloper/video-post.svg?style=for-the-badge' alt='MIT License' height='30px'/>
         </a><a href='https://www.linkedin.com/in/francisco-dari-hernandez-6456b6181/' target='_blank'>
                 <img src='https://img.shields.io/static/v1?style=for-the-badge&message=LinkedIn&color=0A66C2&logo=LinkedIn&logoColor=FFFFFF&label=' alt='Linkedin' height='30px'/>
             </a><a href='https://t.me/darideveloper' target='_blank'>
@@ -23,11 +23,7 @@ Download videos from tiktok and post in:
 * twitter
 * tiktok
 
-Start date: **2021-11-23**
-
-Last update: **2023-04-12**
-
-Project type: **client's project**
+Project type: **client**
 
 </div><br><details>
             <summary>Table of Contents</summary>
@@ -163,9 +159,9 @@ This is the content of the file (copy, paste, and replace with your datz):
 
 ```json
 {
- "chrome_folder": "C:Users{your user name}AppDataLocalGoogleChromeUser Data",
+ "chrome_folder": "C:\Users\{your user name}\AppData\Local\Google\Chrome\User Data",
  "facebook_page": "https://www.facebook.com/your_page_name/?ref=pages_you_manage",
- "api_key": "{project folder}video postsheets-340407-d8642222c103.json",
+ "api_key": "{project folder}\video post\sheets-340407-d8642222c103.json",
  "sheet_url": "https://docs.google.com/spreadsheets/d/1Eh1...iw0M/edit?usp=sharing",
  "instagram": false,
  "facebook": false,
@@ -177,7 +173,7 @@ This is the content of the file (copy, paste, and replace with your datz):
 ```
 
 ### chrome_folder
-The path of google chrome data. By default, in windows, there it in: **C:Users{your user name}AppDataLocalGoogleChromeUser Data**
+The path of google chrome data. By default, in windows, there it in: **C:\Users\{your user name}\AppData\Local\Google\Chrome\User Data**
 
 ### api_key
 Path of your google api key in json format, generated in **Install > Generate Google API Key** section
@@ -238,5 +234,4 @@ Here a tutorial about how to [kill google chrome process in windows](https://git
 ### Close google sheet
 
 To ensure data integrity, do not edit or make changes to the spreadsheet while the program is running.
-
 
